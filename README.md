@@ -15,7 +15,7 @@ gem 'database_cleaner'
 
 Steps to run the application
 
-1) Copy/Download the application folder on to a specific destination in the filesystem
+1) Copy/Download/git clone the application on to a specific destination in the filesystem
 2) bundle install
 3) Execute the command `rails db:create`
 4) Execute the command `rails db:schema:load`
