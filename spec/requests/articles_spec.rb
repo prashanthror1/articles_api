@@ -5,17 +5,17 @@ RSpec.describe 'articles API', type: :request do
   # initialize test data
   let!(:articles) { create_list(:article, 10) }
   let(:article_id) { articles.first.id }
-  let(:article_with_search){create :article_with_search}
+  let!(:article_with_search){create :article_with_search}
 
   # Test suite for GET /articles
   describe 'GET /articles' do
     # make HTTP get request before each example
     before { get '/articles' }
 
-    it 'returns articles' do
+    it 'returns 2 articles since paginated to 2' do
       # Note `json` is a custom helper to parse JSON responses
       expect(json).not_to be_empty
-      expect(json.size).to eq(10)
+      expect(json.size).to eq(2)
     end
 
     it 'returns status code 200' do

@@ -26,7 +26,6 @@ class CommentsController < ApplicationController
 
   # PUT comments/:id
   def update
-    puts params.inspect
     @comment.update(comment_params)
     head :no_content
   end

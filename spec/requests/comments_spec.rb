@@ -17,20 +17,8 @@ RSpec.describe 'Comments API' do
         expect(response).to have_http_status(200)
       end
 
-      it 'returns all article comments' do
-        expect(json.size).to eq(20)
-      end
-    end
-
-    context 'when article does not exist' do
-      let(:article_id) { 0 }
-
-      it 'returns status code 404' do
-        expect(response).to have_http_status(404)
-      end
-
-      it 'returns a not found message' do
-        expect(response.body).to match(/Couldn't find Article/)
+      it 'returns 2 article comments since paginated to 2' do
+        expect(json.size).to eq(2)
       end
     end
   end
@@ -57,17 +45,17 @@ RSpec.describe 'Comments API' do
       end
 
       it 'returns a not found message' do
-        expect(response.body).to match(/Couldn't find Item/)
+        expect(response.body).to match(/Couldn't find Comment/)
       end
     end
   end
 
   # Test suite for PUT /comments
   describe 'POST /comments' do
-    let(:valid_attributes) { { name: 'Visit Narnia', done: false } }
+    let(:valid_attributes) { { commenter: 'Visit Narnia', article_id: article_id, body: "Sample test comment for Article number 1" } }
 
     context 'when request attributes are valid' do
-      before { post "/articles/#{article_id}/comments", params: valid_attributes }
+      before { post "/comments", params: valid_attributes }
 
       it 'returns status code 201' do
         expect(response).to have_http_status(201)
@@ -82,7 +70,7 @@ RSpec.describe 'Comments API' do
       end
 
       it 'returns a failure message' do
-        expect(response.body).to match(/Validation failed: Name can't be blank/)
+        expect(response.body).to match(/Validation failed: Article must exist, Body can't be blank/)
       end
     end
   end
