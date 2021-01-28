@@ -5,7 +5,8 @@ class ArticlesController < ApplicationController
   # GET /articles
   def index
     if params[:search]
-      @articles = Article.where("title like ? or body like ?", "%#{params[:search]}%", "%#{params[:search]}%")
+      search_term = params[:search].downcase.gsub(/\s+/, "")
+      @articles = Article.where("title like ? or body like ?", "%#{search_term}%", "%#{search_term}%")
     else
       @articles = Article.all
     end
