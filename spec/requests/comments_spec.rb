@@ -8,9 +8,9 @@ RSpec.describe 'Comments API' do
   let(:article_id) { article.id }
   let(:id) { comments.first.id }
 
-  # Test suite for GET /articles/:article_id/comments
-  describe 'GET /articles/:article_id/comments' do
-    before { get "/articles/#{article_id}/comments" }
+  # Test suite for GET comments
+  describe 'GET /comments' do
+    before { get "/comments" }
 
     context 'when article exists' do
       it 'returns status code 200' do
@@ -30,14 +30,14 @@ RSpec.describe 'Comments API' do
       end
 
       it 'returns a not found message' do
-        expect(response.body).to match(/Couldn't find Todo/)
+        expect(response.body).to match(/Couldn't find Article/)
       end
     end
   end
 
-  # Test suite for GET /articles/:article_id/comments/:id
-  describe 'GET /articles/:article_id/comments/:id' do
-    before { get "/articles/#{article_id}/comments/#{id}" }
+  # Test suite for GET comments/:id
+  describe 'GET /comments/:id' do
+    before { get "/comments/#{id}" }
 
     context 'when article comment exists' do
       it 'returns status code 200' do
@@ -62,8 +62,8 @@ RSpec.describe 'Comments API' do
     end
   end
 
-  # Test suite for PUT /articles/:article_id/comments
-  describe 'POST /articles/:article_id/comments' do
+  # Test suite for PUT /comments
+  describe 'POST /comments' do
     let(:valid_attributes) { { name: 'Visit Narnia', done: false } }
 
     context 'when request attributes are valid' do
@@ -75,7 +75,7 @@ RSpec.describe 'Comments API' do
     end
 
     context 'when an invalid request' do
-      before { post "/articles/#{article_id}/comments", params: {} }
+      before { post "/comments", params: {} }
 
       it 'returns status code 422' do
         expect(response).to have_http_status(422)
@@ -87,11 +87,11 @@ RSpec.describe 'Comments API' do
     end
   end
 
-  # Test suite for PUT /articles/:article_id/comments/:id
-  describe 'PUT /articles/:article_id/comments/:id' do
-    let(:valid_attributes) { { name: 'Mozart' } }
+  # Test suite for PUT comments/:id
+  describe 'PUT comments/:id' do
+    let(:valid_attributes) { { commenter: 'Mozart' } }
 
-    before { put "/articles/#{article_id}/comments/#{id}", params: valid_attributes }
+    before { put "/comments/#{id}", params: valid_attributes }
 
     context 'when comment exists' do
       it 'returns status code 204' do
@@ -99,8 +99,8 @@ RSpec.describe 'Comments API' do
       end
 
       it 'updates the comment' do
-        updated_item = Item.find(id)
-        expect(updated_item.name).to match(/Mozart/)
+        updated_comment = Comment.find(id)
+        expect(updated_comment.commenter).to match(/Mozart/)
       end
     end
 
@@ -112,14 +112,14 @@ RSpec.describe 'Comments API' do
       end
 
       it 'returns a not found message' do
-        expect(response.body).to match(/Couldn't find Item/)
+        expect(response.body).to match(/Couldn't find Comment/)
       end
     end
   end
 
-  # Test suite for DELETE /articles/:id
-  describe 'DELETE /articles/:id' do
-    before { delete "/articles/#{article_id}/comments/#{id}" }
+  # Test suite for DELETE /comment/:id
+  describe 'DELETE /comments/:id' do
+    before { delete "/comments/#{id}" }
 
     it 'returns status code 204' do
       expect(response).to have_http_status(204)
